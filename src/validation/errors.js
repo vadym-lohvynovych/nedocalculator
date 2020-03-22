@@ -5,10 +5,6 @@ export const errors = {
 		};
 	},
 
-	noError: {
-		error: false
-	},
-
 	wrongSymbols: {
 		error: "Value must contain only numbers"
 	},
