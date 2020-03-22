@@ -1,0 +1,16 @@
+$red: red;
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.helper {
+    color: $red;
+}
+
+#result {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2em;
+}
