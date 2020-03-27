@@ -3,10 +3,10 @@ import "./styles/style.scss";
 
 import initElements from "./initElements";
 import initEvents from "./initEvents";
-import handleCalculation from "./handleCalculation";
-import cleanResult from "./cleanResult";
-import divisionByZero from './validation/divisionByZero';
-import { validateFirstOperand, validateSecondOperand } from "./validation/validateOperands";
+import calculate from "./calculate";
+import divisionByZero from "./validation/divisionByZero";
+import validateOperand from "./validation/validateOperand";
+import handleErrorsView from "./handleErrorsView";
 
 const elements = initElements({
 	firstOperand: "first-operand",
@@ -22,41 +22,63 @@ initEvents([
 	{
 		element: elements.firstOperand,
 		event: "keyup",
-		handler: () => validateFirstOperand(elements, "isNumber")
+		handler: () => {
+			const validation = validateOperand(elements.firstOperand, "isNumber");
+			handleErrorsView(elements, { firstOperandError: validation });
+		}
 	},
 	{
 		element: elements.firstOperand,
 		event: "focus",
-		handler: () => cleanResult(elements)
+		handler: () => {
+			elements.result.textContent = "";
+		}
 	},
 	{
 		element: elements.secondOperand,
 		event: "keyup",
-		handler: () => validateSecondOperand(elements, "isNumber")
+		handler: () => {
+			const validation = validateOperand(elements.secondOperand, "isNumber");
+			handleErrorsView(elements, { secondOperandError: validation });
+		}
 	},
 	{
 		element: elements.secondOperand,
 		event: "focus",
-		handler: () => cleanResult(elements)
+		handler: () => {
+			elements.result.textContent = "";
+		}
 	},
 	{
 		element: elements.operation,
 		event: "change",
-		handler: () => cleanResult(elements)
+		handler: () => {
+			elements.result.textContent = "";
+		}
 	},
 	{
 		element: elements.calculate,
 		event: "click",
 		handler: () => {
-			const error = validateFirstOperand(elements, "isEmpty", "isNumber") || validateSecondOperand(elements, "isEmpty", "isNumber");
-			const divisionError = divisionByZero(elements)
+			const firstOperandError = validateOperand(elements.firstOperand, "isEmpty", "isNumber");
+			const secondOperandError = validateOperand(elements.secondOperand, "isEmpty", "isNumber");
+			const divisionError = divisionByZero(elements.operation.value, elements.secondOperand.value);
 
-			if(error) {
-				return false;
-			} else if (divisionError) {
-				return alert(divisionError);
-			} else {
-				handleCalculation(elements);
+			if (firstOperandError || secondOperandError || divisionError) {
+				handleErrorsView(elements, {
+					firstOperandError,
+					secondOperandError,
+					divisionError
+				});
+			} 
+			else {
+				let result = calculate(elements.firstOperand.value, elements.operation.value, elements.secondOperand.value);
+
+				if (result % 1) {
+					result = result.toFixed(5);
+				}
+
+				elements.result.textContent = result;
 			}
 		}
 	}
