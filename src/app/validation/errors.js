@@ -1,9 +1,9 @@
 export const errors = {
-	isEmpty: `Operand is empty`,
+  isEmpty: `Operand is empty`,
 
-	isNumber: "Value must contain only numbers",
+  isNumber: 'Value must contain only numbers',
 
-	divisionByZero: "Division by zero",
+  divisionByZero: 'Division by zero',
 
-	general: "Unexpected validation"
+  general: 'Unexpected validation',
 };

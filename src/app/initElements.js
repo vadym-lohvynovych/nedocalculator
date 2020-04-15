@@ -1,9 +1,9 @@
-export default function(initObject) {
-	let elements = {};
+export default function (initObject) {
+  let elements = {};
 
-	Object.keys(initObject).forEach(key => {
-		elements[key] = document.getElementById(initObject[key]);
-	});
+  Object.keys(initObject).forEach((key) => {
+    elements[key] = document.querySelector(initObject[key]);
+  });
 
-	return elements;
+  return elements;
 }
